@@ -27,34 +27,39 @@ return {value:'', isValid:false}
 const Login = (props) => {
   // const [enteredEmail, setEnteredEmail] = useState('');
   // const [emailIsValid, setEmailIsValid] = useState();
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [passwordIsValid, setPasswordIsValid] = useState();
+  // const [enteredPassword, setEnteredPassword] = useState('');
+  // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
 const [emailState, dispatchEmail] = useReducer(emailReducer, {value:" ", isValid: null})
 
 const [passwordState, dispatchPassword] = useReducer(passwordReducer, {value:'', isValid:null})
 
-// useEffect(()=>{
-//   const identifier=setTimeout(()=>{
-//     setFormIsValid(
-//       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-//     );
-//   },500)
+const {isValid:emailIsValid}=emailState;
+const {isValid:passwordIsValid}=passwordState
 
-//   return ()=>{
-//     clearTimeout(identifier)
-//   } 
+useEffect(()=>{
+  const identifier=setTimeout(()=>{
+    console.log('checking form validity')
+    setFormIsValid(
+      emailIsValid && passwordIsValid
+    );
+  },500)
+
+  return ()=>{
+    clearTimeout(identifier)
+    console.log('cleanup')
+  } 
    
-// },[enteredEmail,enteredPassword])
+},[emailIsValid,passwordIsValid])
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
     dispatchEmail({type:"USER_INPUT",val : event.target.value})
 
-    setFormIsValid(
-      emailState.value.includes('@')&& event.target.value.trim().length > 6
- );
+//     setFormIsValid(
+//       event.target.value.includes('@')&& passwordState.isValid
+//  );
    
   };
 
@@ -62,9 +67,9 @@ const [passwordState, dispatchPassword] = useReducer(passwordReducer, {value:'',
     // setEnteredPassword(event.target.value);
     dispatchPassword({type:"PASSWORD_INPUT",value:event.target.value})
 
-    setFormIsValid(
-      emailState.isValid && event.target.value.trim().length > 6
- );
+//     setFormIsValid(
+//       emailState.isValid && event.target.value.trim().length > 6
+//  );
 
   };
 
